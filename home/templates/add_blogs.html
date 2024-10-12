@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Añadir Blog{% endblock %}
+{% block body %}
+<div class="container mt-3">
+    <h2>Añadir Nuevo Blog</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Agregar Blog</button>
+    </form>
+</div>
+{% endblock %}

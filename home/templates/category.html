@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category|title }} - SSNews{% endblock %}
+
+{% block body %}
+<h1>{{ category|title }}</h1>
+{% for blog in blogs %}
+<div class="post-container">
+    <h2>{{ blog.title }}</h2>
+    <p>{{ blog.content|truncatewords:50 }}</p>
+    <a href="{% url 'blog_detail' blog.id %}">Leer más</a>
+</div>
+{% empty %}
+<p>No hay blogs en esta categoría.</p>
+{% endfor %}
+{% endblock %}

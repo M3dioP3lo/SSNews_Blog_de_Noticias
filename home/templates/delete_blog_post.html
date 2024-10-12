@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>¿Estás seguro de que quieres eliminar este blog?</h2>
+<p>Título: {{ blog.título }}</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Sí, eliminar</button>
+</form>
+<a href="{% url 'blog_detail' blog.slug %}">No, cancelar</a>
+{% endblock %}
+
+
+

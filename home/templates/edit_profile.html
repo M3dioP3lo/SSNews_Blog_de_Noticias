@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %} Editar Perfil {% endblock %}
+{% block css %}{% endblock %}
+{% block body %}
+<div class="container mt-3">
+    <h2>Editar Perfil</h2>
+    <form action="{% url 'edit_profile' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+    </form>
+</div>
+{% endblock %}
+{% block js %}
+<!-- htmlhint script-disabled:false -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% if messages %}
+            {% for message in messages %}
+                alert("{{ message|escapejs }}");
+            {% endfor %}
+        {% endif %}
+    });
+</script>
+<!-- htmlhint script-disabled:true -->
+{% endblock %}
