@@ -10,6 +10,7 @@ from django.contrib import messages
 from .models import Profile, Blog, Comment
 from .forms import ProfileForm, BlogForm, UserForm, CommentForm
 from django.views.decorators.csrf import csrf_protect
+from django.db.models import Q
 
 def home(request):
     blogs = Blog.objects.all().order_by('-fecha_publicacion')
@@ -87,6 +88,16 @@ def search(request):
         return render(request, "search.html", {'searched':searched, 'blogs':blogs})
     else:
         return render(request, "search.html", {})
+    
+def search_view(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        blogs = Blog.objects.filter(
+            Q(title__contains=searched) | Q(content__contains=searched)
+        )
+        return render(request, 'search_results.html', {'searched': searched, 'blogs': blogs})
+    else:
+        return render(request, 'search_results.html', {})    
 
 @login_required
 @csrf_protect
@@ -123,7 +134,7 @@ def profile_view(request):
         profile = request.user.profile
     except Profile.DoesNotExist:
         profile = None
-    return render(request, 'profile.html', {'profile': profile})
+    return render(request, 'profile.html', {'user': request.user}) #Antes{'profile': profile})
 
 @login_required
 def edit_profile(request):
@@ -172,18 +183,20 @@ def register(request):
 
 def login_view(request):
     if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-        user = authenticate(username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            messages.success(request, "Inicio de sesión exitoso.")
-            return redirect("/")  # Redirige a la página principal
+        if username and password:
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, "Inicio de sesión exitoso.")
+                return redirect("/")  # Redirige a la página principal
+            else:
+                messages.error(request, "Credenciales inválidas. Inténtalo de nuevo.")
         else:
-            messages.error(request, "Credenciales inválidas. Inténtalo de nuevo.")
-            return redirect('/login')
+            messages.error(request, "Por favor, proporciona un nombre de usuario y contraseña.")
+        return redirect('login')
 
     return render(request, "login.html")
 
