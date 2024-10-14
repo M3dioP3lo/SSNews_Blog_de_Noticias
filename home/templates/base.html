@@ -285,14 +285,16 @@
       <div class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav align-items-center">
           {% if user.is_authenticated %}
-            <li class="nav-item d-flex align-items-center">
-              {% if user.profile.image %}
-                <img src="{{ user.profile.image.url }}" alt="{{ user.username }}" class="rounded-circle mr-2" style="width: 30px; height: 30px; object-fit: cover;">
-              {% else %}
-                <img src="{% static 'default_profile_image.png' %}" alt="{{ user.username }}" class="rounded-circle mr-2" style="width: 30px; height: 30px; object-fit: cover;">
-              {% endif %}
-              <a href="/profile/" class="nav-link text-light">{{ user.username }}</a>
-            </li>
+          <li class="nav-item d-flex align-items-center">
+            {% if user.profile.image %}
+            <img src="{{ user.profile.image.url }}" alt="{{ user.username }}" class="rounded-circle mr-2"
+              style="width: 30px; height: 30px; object-fit: cover;">
+            {% else %}
+            <img src="{% static 'default_profile_image.png' %}" alt="{{ user.username }}" class="rounded-circle mr-2"
+              style="width: 30px; height: 30px; object-fit: cover;">
+            {% endif %}
+            <a href="/profile/" class="nav-link text-light">{{ user.username }}</a>
+          </li>
           <li class="nav-item">
             <a href="/add_blogs/" class="nav-link text-light">Crear Blog</a>
           </li>
@@ -333,7 +335,11 @@
     <div class="container">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a href="{% url 'home' %}" class="customCheckBoxWrapper text-white" style="border-color: white;">Home</a>
+          <a href="{% url 'home' %}" class="customCheckBoxWrapper text-white">
+            <div class="customCheckBox">
+              <div class="inner">Inicio</div>
+            </div>
+          </a>
         </li>
         <li class="nav-item">
           <a href="{% url 'filtrar_por_categoria' 'politica' %}" class="customCheckBoxWrapper text-white">
@@ -343,23 +349,32 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="{% url 'filtrar_por_categoria' 'deportes' %}" class="customCheckBoxWrapper text-white"
-            style="border-color: white;">Deportes</a>
+          <a href="{% url 'filtrar_por_categoria' 'deportes' %}" class="customCheckBoxWrapper text-white">
+            <div class="customCheckBox">
+              <div class="inner">Deportes</div>
+            </div>
+          </a>
         </li>
         <li class="nav-item">
-          <a href="{% url 'filtrar_por_categoria' 'internacionales' %}" class="customCheckBoxWrapper text-white"
-            style="border-color: white;">Internacionales</a>
+          <a href="{% url 'filtrar_por_categoria' 'internacionales' %}" class="customCheckBoxWrapper text-white">
+            <div class="customCheckBox">
+              <div class="inner">Internacionales</div>
+            </div>
+          </a>
         </li>
         <li class="nav-item">
-          <a href="{% url 'filtrar_por_categoria' 'ciencia' %}" class="customCheckBoxWrapper text-white"
-            style="border-color: white;">Ciencia</a>
+          <a href="{% url 'filtrar_por_categoria' 'ciencia' %}" class="customCheckBoxWrapper text-white">
+            <div class="customCheckBox">
+              <div class="inner">Ciencia</div>
+            </div>
+          </a>
         </li>
       </ul>
-      <form class="d-flex" action="{% url 'search' %}" method="POST">
+      <form class="d-flex" action="{% url 'search_blogs' %}" method="POST">
         {% csrf_token %}
         <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" name="searched">
         <button class="btn btn-outline-light" type="submit">Buscar</button>
-      </form>
+    </form>
     </div>
   </nav>
   <div class="watermark-container">

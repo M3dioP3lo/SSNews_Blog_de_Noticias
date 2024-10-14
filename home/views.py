@@ -118,6 +118,17 @@ def filtrar_por_categoria(request, categoria):
     blogs = Blog.objects.filter(categoria=categoria).order_by('-fecha_publicacion')
     return render(request, 'home.html', {'blogs': blogs, 'categoria': categoria})
 
+def search_blogs(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        blogs = Blog.objects.filter(
+            Q(titulo__icontains=searched) | 
+            Q(contenido__icontains=searched)
+        )
+        return render(request, 'search_results.html', {'searched': searched, 'blogs': blogs})
+    else:
+        return render(request, 'search_results.html', {})
+
 class UpdatePostView(UpdateView):
     model = Blog
     template_name = 'edit_blog_post.html'
